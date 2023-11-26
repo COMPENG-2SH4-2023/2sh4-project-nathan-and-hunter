@@ -1,4 +1,5 @@
 #include "GameMechs.h"
+#include "MacUILib.h"
 
 GameMechs::GameMechs()
 {
@@ -18,10 +19,6 @@ GameMechs::GameMechs(int boardX, int boardY)
 
 // do you need a destructor?
 
-GameMechs::~GameMechs()
-{
-
-}
 
 
 
@@ -47,7 +44,7 @@ int GameMechs::getBoardSizeX()
 
 int GameMechs::getBoardSizeY()
 {
-    return boardSizeY
+    return boardSizeY;
 }
 
 

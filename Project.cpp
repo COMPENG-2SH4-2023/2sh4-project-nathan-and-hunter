@@ -10,7 +10,7 @@ using namespace std;
 #define DELAY_CONST 100000
 
 GameMechs* myGM;
-Player* myPlayer
+Player* myPlayer;
 
 void Initialize(void);
 void GetInput(void);
@@ -51,26 +51,31 @@ void Initialize(void)
 
 void GetInput(void)
 {
-    myGM -> getInput();
+
 }
 
 void RunLogic(void)
 {
-    myPlayer -> updatePlayerDir();
+    myPlayer-> updatePlayerDir();
+    myPlayer -> movePlayer();
 }
+
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
+    objPos tempPos;
+
+    myPlayer->getPlayerPos(tempPos);
     
-    for (int y = 0; y < ROWS; y++)
+    for (int y = 0; y < myGM->getBoardSizeY(); y++)
     {
-        for (int x = 0; x < COLS; x++)
+        for (int x = 0; x < myGM->getBoardSizeX(); x++)
         {
-            if (y == 0 || y == ROWS - 1)
+            if (y == 0 || y == myGM->getBoardSizeY() - 1)
             {
-                if (x < COLS - 1)
+                if (x < myGM->getBoardSizeX() - 1)
                 {
                     MacUILib_printf("#");
                 }
@@ -80,28 +85,34 @@ void DrawScreen(void)
                 }
             }
 
-            else if ((y > 0) && (y < COLS - 1))
+            else if ((y > 0) && (y < myGM->getBoardSizeX() - 1))
             {
                 if (x == 0)
                 {
                     MacUILib_printf("#");
                 }
-                else if (x == COLS - 1)
+                else if (x == myGM->getBoardSizeX() - 1)
                 {
                     MacUILib_printf("#\n");
                 }
                 else
                 {
-                    MacUILib_printf(" ");
+                    if (x == tempPos.x && y == tempPos.y)
+                    {
+                        MacUILib_printf("%c", tempPos.symbol);
+                    }
+                    else 
+                    {
+                        MacUILib_printf(" ");
+                    }
                 }
             }
         }
     }
-    objPos tempPos;
-    myPlayer->getPlayerPos(tempPos);
     MacUILib_printf("Board Size: %dx%d, Player Pos: <%d, %d> + %c\n", myGM->getBoardSizeX()
     , myGM->getBoardSizeY(),
      tempPos.x, tempPos.y, tempPos.symbol );
+     
 }
 
   
@@ -117,4 +128,7 @@ void CleanUp(void)
     MacUILib_clearScreen();    
   
     MacUILib_uninit();
+
+    delete myGM;
+    delete myPlayer;
 }
