@@ -112,6 +112,13 @@ void DrawScreen(void)
     MacUILib_printf("Board Size: %dx%d, Player Pos: <%d, %d> + %c\n", myGM->getBoardSizeX()
     , myGM->getBoardSizeY(),
      tempPos.x, tempPos.y, tempPos.symbol );
+    MacUILib_printf("Score: %d\n", myGM -> getScore());
+
+    if (myGM -> getLoseFlagStatus() == true)
+    {
+        myGM -> setExitTrue();
+        MacUILib_printf("You Lose! Better luck next time.\n");
+    }
      
 }
 
@@ -125,7 +132,10 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen();    
+    if (myGM -> getLoseFlagStatus() != true)
+    {
+        MacUILib_clearScreen();    
+    }
   
     MacUILib_uninit();
 
