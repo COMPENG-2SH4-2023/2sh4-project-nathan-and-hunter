@@ -25,6 +25,7 @@ void Player::getPlayerPos(objPos &returnPos)
 void Player::updatePlayerDir()
 {
     char input = mainGameMechsRef -> getInput();
+
     if (input != 0)
     {
         switch(input) /*FILL IN SWITCH WITH INPUT OF GAMEMECHS lies within Gamemechs* (pointer)*/
@@ -38,6 +39,7 @@ void Player::updatePlayerDir()
             case '2':
                 mainGameMechsRef -> setLoseTrue();
                 break;
+                
             case 'w':
                 if (myDir != UP && myDir != DOWN)
                     myDir = UP;
@@ -61,7 +63,6 @@ void Player::updatePlayerDir()
                 break;
         // PPA3 input processing logic  
         }
-        mainGameMechsRef -> clearInput(); 
     }     
 }
 

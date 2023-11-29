@@ -9,6 +9,8 @@ GameMechs::GameMechs()
     loseFlag = false;
     boardSizeX = 30;
     boardSizeY = 15;
+
+    foodPos.setObjPos(-1, -1, 'o');
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -84,4 +86,3 @@ void GameMechs::setLoseTrue()
 {
     loseFlag = true;
 }
-
