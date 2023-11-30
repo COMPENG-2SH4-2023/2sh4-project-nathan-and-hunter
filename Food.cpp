@@ -11,14 +11,12 @@ Food::~Food()
 
 }
 
-void Food::generateFood(objPos blockOff)
+void Food::generateFood(objPosArrayList* blockOff)
 {
-    // generate random x and y coord, make sure they are not boarder or blockoff pos.
-    // check x and y against 0 and borderX/ Y
-    // remember, in objPos class u have an isPosEqual() method. use this instead of comparing elemetn by element for ur convenience
     srand(time(NULL));
     int x, y;
     int repeat = 1;
+    objPos tempObj;
 
     while (repeat)
     {
@@ -27,16 +25,21 @@ void Food::generateFood(objPos blockOff)
         x = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 2);
         y = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 2);
 
-
+        for (int i = 0; i < blockOff->getSize(); i++)
+        {
+            blockOff->getElement(tempObj, i);
+            if (x == tempObj.x && y == tempObj.y)
+            {
+                repeat = 1;
+                break;
+            }
+        }
+        
         if (x == foodPos.x && y == foodPos.y)
         {
             repeat = 1;
         }
 
-        else if (x == blockOff.x && y == blockOff.y)
-        {
-            repeat = 1;
-        }
     }
     foodPos.setObjPos(x, y, 'o');
 }

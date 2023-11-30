@@ -2,8 +2,9 @@
 #include "MacUILib.h"
 #include "objPos.h"
 #include "GameMechs.h"
-#include "Player.h"
 #include "Food.h"
+#include "Player.h"
+#include "objPosArrayList.h"
 
 using namespace std;
 
@@ -37,7 +38,6 @@ int main(void)
     }
 
     CleanUp();
-
 }
 
 
@@ -47,25 +47,16 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs(30, 15);
-    myPlayer = new Player(myGM);
     myFood = new Food(myGM);
-
-    objPos tempPos;
-    myPlayer->getPlayerPos(tempPos);
-    myFood -> generateFood(tempPos);
+    myPlayer = new Player(myGM, myFood);
+    
+    objPosArrayList* playerBody =  myPlayer->getPlayerPos();
+    myFood->generateFood(playerBody);
 }
 
 void GetInput(void)
 {
-    char input = myGM -> getInput();
-
-    objPos tempPos;
-    myPlayer->getPlayerPos(tempPos);
-
-    if (input == '3')
-    {
-        myFood -> generateFood(tempPos);
-    }
+    
 }
 
 void RunLogic(void)
@@ -80,18 +71,23 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
+    bool drawn;
+
     int cols = myGM-> getBoardSizeX();
     int rows = myGM-> getBoardSizeY();
 
-    objPos tempPos;
+    objPosArrayList* playerBody =  myPlayer->getPlayerPos();
+    objPos tempBody;
+
     objPos tempFoodPos;
-    myPlayer->getPlayerPos(tempPos);
     myFood-> getFoodPos(tempFoodPos);
     
     for (int y = 0; y < rows; y++)
     {
         for (int x = 0; x < cols; x++)
         {
+            drawn = false;
+
             if (y == 0 || y == rows - 1)
             {
                 if (x < cols - 1)
@@ -116,11 +112,19 @@ void DrawScreen(void)
                 }
                 else
                 {
-                    if (x == tempPos.x && y == tempPos.y)
+                    for (int k = 0; k < playerBody->getSize(); k++)
                     {
-                        MacUILib_printf("%c", tempPos.symbol);
+                        playerBody -> getElement(tempBody, k);
+                        if (tempBody.x == x && tempBody.y == y)
+                        {
+                            MacUILib_printf("%c", tempBody.symbol);
+                            drawn = true;
+                            break;
+                        }
                     }
-                    else if (x == tempFoodPos.x && y == tempFoodPos.y)
+                    if (drawn) continue;
+
+                    if (x == tempFoodPos.x && y == tempFoodPos.y)
                     {
                         MacUILib_printf("%c", tempFoodPos.symbol);
                     }
@@ -132,9 +136,16 @@ void DrawScreen(void)
             }
         }
     }
-    MacUILib_printf("Board Size: %dx%d, Player Pos: <%d, %d>, Food Pos: <%d, %d> + %c\n", myGM->getBoardSizeX()
-    , myGM->getBoardSizeY(),  tempPos.x, tempPos.y, tempFoodPos.x, tempFoodPos.y, tempPos.symbol );
+    
     MacUILib_printf("Score: %d\n", myGM -> getScore());
+    MacUILib_printf("DEBUGGING:\n");
+    MacUILib_printf("Board Size: %dx%d\nFood Pos: <%d, %d>\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempFoodPos.x, tempFoodPos.y); 
+    MacUILib_printf("Player Positions: ");
+    for (int i = 0; i < playerBody-> getSize(); i++)
+    {
+        playerBody -> getElement(tempBody, i);
+        MacUILib_printf("<%d, %d> ", tempBody.x, tempBody.y );
+    }
 
     if (myGM -> getLoseFlagStatus() == true)
     {

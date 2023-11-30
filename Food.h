@@ -1,3 +1,6 @@
+#ifndef FOOD_H
+#define FOOD_H
+
 #include <cstdlib>
 #include <time.h>
 
@@ -16,6 +19,7 @@ class Food
     public:
         Food(GameMechs* thisGMRef);
         ~Food();
-        void generateFood(objPos blockOff);
+        void generateFood(objPosArrayList* blockOff);
         void getFoodPos(objPos &returnPos);
 };
+#endif

@@ -1,24 +1,26 @@
 #include "Player.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* thisFoodRef)
 {
     mainGameMechsRef = thisGMRef;
+    mainFoodRef = thisFoodRef;
     myDir = STOP;
-    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2 ,'*');
-
+    objPos headElement(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2 ,'*');
+    playerPosList = new objPosArrayList();
+    playerPosList->insertHead(headElement);
     // more actions to be included
 }
 
-
 Player::~Player()
 {
+    delete playerPosList;
     // delete any heap members here
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+objPosArrayList* Player::getPlayerPos()
 {
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    return playerPosList;
     // return the reference to the playerPos arrray list
 }
 
@@ -28,18 +30,16 @@ void Player::updatePlayerDir()
 
     if (input != 0)
     {
-        switch(input) /*FILL IN SWITCH WITH INPUT OF GAMEMECHS lies within Gamemechs* (pointer)*/
+        switch(input)
         {
             case ' ':  // exit
                 mainGameMechsRef -> setExitTrue();
                 break;
-            case '1':
-                mainGameMechsRef -> incrementScore();
-                break;
-            case '2':
+
+            case '2': //FOR DEBUGGING
                 mainGameMechsRef -> setLoseTrue();
                 break;
-                
+
             case 'w':
                 if (myDir != UP && myDir != DOWN)
                     myDir = UP;
@@ -71,43 +71,61 @@ void Player::movePlayer()
     int cols = mainGameMechsRef-> getBoardSizeX();
     int rows = mainGameMechsRef-> getBoardSizeY();
 
+    objPos currHead;
+    objPos currFood;
+    playerPosList->getHeadElement(currHead);
     // PPA3 Finite State Machine logic
     switch(myDir)
         {
         case LEFT:
-            if (playerPos.x == 0)
+            if (currHead.x == 0)
             {
-                playerPos.x = cols - 1;
+                currHead.x = cols - 1;
             }
-            playerPos.x--;
+            currHead.x--;
             break;
             
          case RIGHT:
-            if (playerPos.x == cols - 1)
+            if (currHead.x == cols - 1)
             {
-                playerPos.x = 0;
+                currHead.x = 0;
             }
-            playerPos.x++;
+            currHead.x++;
             break;
             
         case UP:
-            if (playerPos.y == 0)
+            if (currHead.y == 0)
             {
-                playerPos.y = rows - 1;
+                currHead.y = rows - 1;
             }
-            playerPos.y--;
+            currHead.y--;
             break;
             
         case DOWN:
-            if (playerPos.y == rows - 1)
+            if (currHead.y == rows - 1)
             {
-                playerPos.y = 0;
+                currHead.y = 0;
             }
-            playerPos.y++;
+            currHead.y++;
             break;
             
         default:
             break;
         }
+        
+        mainFoodRef->getFoodPos(currFood);
+
+        if (currHead.x == currFood.x && currHead.y == currFood.y)
+        {
+            playerPosList->insertHead(currHead);
+            mainFoodRef->generateFood(playerPosList);
+            mainGameMechsRef->incrementScore();
+        }
+        else
+        {
+            playerPosList->insertHead(currHead);
+            playerPosList->removeTail();
+        }
+
 }
 
