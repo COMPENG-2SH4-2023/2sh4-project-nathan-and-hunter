@@ -135,7 +135,9 @@ void DrawScreen(void)
                 }
             }
         }
+        
     }
+    MacUILib_printf("\n");
     
     MacUILib_printf("Score: %d\n", myGM -> getScore());
     MacUILib_printf("DEBUGGING:\n");
@@ -147,11 +149,6 @@ void DrawScreen(void)
         MacUILib_printf("<%d, %d> ", tempBody.x, tempBody.y );
     }
 
-    if (myGM -> getLoseFlagStatus() == true)
-    {
-        myGM -> setExitTrue();
-        MacUILib_printf("You Lose! Better luck next time.\n");
-    }
      
 }
 
@@ -165,9 +162,10 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    if (myGM -> getLoseFlagStatus() != true)
+    MacUILib_clearScreen();   
+    if (myGM -> getExitFlagStatus())
     {
-        MacUILib_clearScreen();    
+         MacUILib_printf("You Lose! Better luck next time.");
     }
   
     MacUILib_uninit();

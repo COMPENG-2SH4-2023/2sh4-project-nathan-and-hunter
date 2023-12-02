@@ -73,6 +73,7 @@ void Player::movePlayer()
 
     objPos currHead;
     objPos currFood;
+    objPos currPos;
     playerPosList->getHeadElement(currHead);
     // PPA3 Finite State Machine logic
     switch(myDir)
@@ -126,6 +127,14 @@ void Player::movePlayer()
             playerPosList->insertHead(currHead);
             playerPosList->removeTail();
         }
-
+        
+        for (int i = 1; i < playerPosList->getSize(); i++){
+            playerPosList->getElement(currPos, i);
+            if (currHead.x == currPos.x && currHead.y == currPos.y)
+            {
+                mainGameMechsRef->setExitTrue();      
+                mainGameMechsRef->setLoseTrue(); 
+            }
+        }
 }
 
