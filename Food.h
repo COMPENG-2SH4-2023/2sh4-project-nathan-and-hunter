@@ -18,7 +18,6 @@ class Food
     
     public:
         Food(GameMechs* thisGMRef);
-        ~Food();
         void generateFood(objPosArrayList* blockOff);
         void getFoodPos(objPos &returnPos);
 };

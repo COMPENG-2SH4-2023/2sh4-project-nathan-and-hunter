@@ -6,10 +6,6 @@ Food::Food(GameMechs* thisGMRef)
     mainGameMechsRef = thisGMRef;
 }
 
-Food::~Food()
-{
-
-}
 
 void Food::generateFood(objPosArrayList* blockOff)
 {

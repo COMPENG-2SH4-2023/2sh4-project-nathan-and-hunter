@@ -36,10 +36,6 @@ void Player::updatePlayerDir()
                 mainGameMechsRef -> setExitTrue();
                 break;
 
-            case '2': //FOR DEBUGGING
-                mainGameMechsRef -> setLoseTrue();
-                break;
-
             case 'w':
                 if (myDir != UP && myDir != DOWN)
                     myDir = UP;
