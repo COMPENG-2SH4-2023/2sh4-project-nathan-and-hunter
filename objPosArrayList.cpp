@@ -16,9 +16,7 @@ objPosArrayList::objPosArrayList()
 
 objPosArrayList::~objPosArrayList()
 { 
-    //Deconstruct aList allocation 
     delete[] aList;
-
 }
 
 int objPosArrayList::getSize()
@@ -49,7 +47,7 @@ void objPosArrayList::insertTail(objPos thisPos)
     sizeList++;
 }
 
-void objPosArrayList::removeHead() //something wrong with this
+void objPosArrayList::removeHead()
 {
     if (sizeList == 0){
         return;
@@ -64,7 +62,7 @@ void objPosArrayList::removeHead() //something wrong with this
     //need to shuffle elements back down
 }
 
-void objPosArrayList::removeTail() // something wrong with this
+void objPosArrayList::removeTail()
 {
     if (sizeList == 0)
     {
