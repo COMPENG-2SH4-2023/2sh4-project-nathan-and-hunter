@@ -5,8 +5,8 @@ Project Preparation Activity 3
 You must watch the briefing video and read through the manual to engage in the development activities.
 
 
-Section: L07
+Section: L07, L04
 
-MacID: boydh4
+MacID: boydh4, chann47
 
-StudentID: 400384654
+StudentID: 400384654, 400450355
