@@ -79,35 +79,35 @@ void Player::movePlayer()
     switch(myDir)
         {
         case LEFT:
-            if (currHead.x == 0)
-            {
-                currHead.x = cols - 1;
-            }
             currHead.x--;
+            if (currHead.x <= 0)
+            {
+                currHead.x = cols - 2;
+            }
             break;
             
          case RIGHT:
-            if (currHead.x == cols - 1)
-            {
-                currHead.x = 0;
-            }
             currHead.x++;
+            if (currHead.x >= cols - 1)
+            {
+                currHead.x = 1;
+            }
             break;
             
         case UP:
-            if (currHead.y == 0)
-            {
-                currHead.y = rows - 1;
-            }
             currHead.y--;
+            if (currHead.y <= 0)
+            {
+                currHead.y = rows - 2;
+            }
             break;
             
         case DOWN:
-            if (currHead.y == rows - 1)
-            {
-                currHead.y = 0;
-            }
             currHead.y++;
+            if (currHead.y >= rows - 1)
+            {
+                currHead.y = 1;
+            }
             break;
             
         default:

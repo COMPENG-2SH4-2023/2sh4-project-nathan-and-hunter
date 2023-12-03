@@ -66,7 +66,6 @@ void RunLogic(void)
     myGM -> clearInput();
 }
 
-
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
@@ -88,57 +87,37 @@ void DrawScreen(void)
         {
             drawn = false;
 
-            if (y == 0 || y == rows - 1)
+            for (int k = 0; k < playerBody->getSize(); k++)
             {
-                if (x < cols - 1)
+                playerBody -> getElement(tempBody, k);
+                if (tempBody.x == x && tempBody.y == y)
                 {
-                    MacUILib_printf("#");
-                }
-                else
-                {
-                    MacUILib_printf("#\n");
+                    MacUILib_printf("%c", tempBody.symbol);
+                    drawn = true;
+                    break;
                 }
             }
 
-            else if ((y > 0) && (y < cols - 1))
-            {
-                if (x == 0)
-                {
-                    MacUILib_printf("#");
-                }
-                else if (x == cols - 1)
-                {
-                    MacUILib_printf("#\n");
-                }
-                else
-                {
-                    for (int k = 0; k < playerBody->getSize(); k++)
-                    {
-                        playerBody -> getElement(tempBody, k);
-                        if (tempBody.x == x && tempBody.y == y)
-                        {
-                            MacUILib_printf("%c", tempBody.symbol);
-                            drawn = true;
-                            break;
-                        }
-                    }
-                    if (drawn) continue;
+            if (drawn) continue;
 
-                    if (x == tempFoodPos.x && y == tempFoodPos.y)
-                    {
-                        MacUILib_printf("%c", tempFoodPos.symbol);
-                    }
-                    else 
-                    {
-                        MacUILib_printf(" ");
-                    }
-                }
+            if (y == 0 || y == rows - 1 || x == 0 || x == cols - 1)
+            {
+                MacUILib_printf("%c", '#');
+            }
+            else if (x == tempFoodPos.x && y == tempFoodPos.y)
+            {
+                MacUILib_printf("%c", tempFoodPos.symbol);
+            }
+            else
+            {
+                MacUILib_printf("%c", ' ');
             }
         }
         
+        MacUILib_printf("%c", '\n');
     }
+
     MacUILib_printf("\n");
-    
     MacUILib_printf("Score: %d\n", myGM -> getScore());
     MacUILib_printf("DEBUGGING:\n");
     MacUILib_printf("Board Size: %dx%d\nFood Pos: <%d, %d>\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempFoodPos.x, tempFoodPos.y); 
@@ -148,11 +127,8 @@ void DrawScreen(void)
         playerBody -> getElement(tempBody, i);
         MacUILib_printf("<%d, %d> ", tempBody.x, tempBody.y );
     }
-
-     
 }
 
-  
 
 void LoopDelay(void)
 {
@@ -163,7 +139,7 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();   
-    if (myGM -> getExitFlagStatus())
+    if (myGM -> getLoseFlagStatus())
     {
          MacUILib_printf("You Lose! Better luck next time.\nYour score was: %d", myGM-> getScore());
     }
