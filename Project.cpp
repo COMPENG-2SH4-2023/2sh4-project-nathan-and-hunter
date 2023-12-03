@@ -165,7 +165,7 @@ void CleanUp(void)
     MacUILib_clearScreen();   
     if (myGM -> getExitFlagStatus())
     {
-         MacUILib_printf("You Lose! Better luck next time.");
+         MacUILib_printf("You Lose! Better luck next time.\nYour score was: %d", myGM-> getScore());
     }
   
     MacUILib_uninit();

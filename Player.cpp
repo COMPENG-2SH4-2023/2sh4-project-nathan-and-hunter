@@ -116,11 +116,9 @@ void Player::movePlayer()
         
         mainFoodRef->getFoodPos(currFood);
 
-        if (currHead.x == currFood.x && currHead.y == currFood.y)
+        if (checkFoodConsumption())
         {
-            playerPosList->insertHead(currHead);
-            mainFoodRef->generateFood(playerPosList);
-            mainGameMechsRef->incrementScore();
+            increasePlayerLength();
         }
         else
         {
@@ -136,5 +134,33 @@ void Player::movePlayer()
                 mainGameMechsRef->setLoseTrue(); 
             }
         }
+}
+
+bool Player::checkFoodConsumption()
+{
+    objPos currHead;
+    objPos currFood;
+    playerPosList->getHeadElement(currHead);
+    mainFoodRef->getFoodPos(currFood);
+
+    if (currHead.x == currFood.x && currHead.y == currFood.y)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+void Player::increasePlayerLength()
+{
+    objPos currHead;
+    playerPosList->getHeadElement(currHead);
+
+    playerPosList->insertHead(currHead);
+    mainFoodRef->generateFood(playerPosList);
+    mainGameMechsRef->incrementScore();
 }
 
